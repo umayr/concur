@@ -1,0 +1,32 @@
+hash: 131b0b0115fe1e86a223808bfe4a26bbaa8c8945db6ccccb102f0a6a3e4049ea
+updated: 2018-04-16T22:29:30.664138+05:00
+imports:
+- name: github.com/golang/protobuf
+  version: 1e59b77b52bf8e4b449a57e6f79f21226d571845
+  subpackages:
+  - proto
+- name: github.com/jzelinskie/geddit
+  version: f75101e39ffed7ec9596d6929a8d85bb86223339
+- name: github.com/zmb3/spotify
+  version: 79deba8533f6a0e6545b3937667522d323aa6754
+- name: golang.org/x/net
+  version: dc871a5d77e227f5bbf6545176ef3eeebf87e76e
+  subpackages:
+  - context
+  - context/ctxhttp
+- name: golang.org/x/oauth2
+  version: 6a2004c8907a86949d71c664c81574897a4e55a6
+  subpackages:
+  - clientcredentials
+  - internal
+- name: google.golang.org/appengine
+  version: 9d8544a6b2c7df9cff240fcf92d7b2f59bc13416
+  subpackages:
+  - internal
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
+testImports: []
