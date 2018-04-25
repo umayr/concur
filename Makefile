@@ -1,6 +1,6 @@
 .PHONY: default deps clean fmt pretest lint lint-test list vet build test all
 SHELL := /bin/bash
-BINARY=sync
+BINARY=concur
 
 VERSION=0.1.0
 BUILD_TIME=`date +%FT%T%z`

@@ -1,4 +1,4 @@
-package: github.com/umayr/sync
+package: github.com/umayr/concur
 import:
 - package: github.com/zmb3/spotify
 - package: github.com/jzelinskie/geddit

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/umayr/sync"
+	"github.com/umayr/concur"
 )
 
 var (
@@ -60,7 +60,7 @@ func exitWithErr(err error) {
 	os.Exit(1)
 }
 
-func newSpotifyWithRedirectURI() *sync.Spotify {
+func newSpotifyWithRedirectURI() *concur.Spotify {
 	uri, err := url.Parse(flagRedirectURI)
 	if err != nil {
 		exitWithErr(err)
@@ -70,7 +70,7 @@ func newSpotifyWithRedirectURI() *sync.Spotify {
 		exitWithErr(fmt.Errorf("Redirect URI should be provided as https://some-url.com/callback"))
 	}
 
-	s, err := sync.NewSpotify(uri.String(), "")
+	s, err := concur.NewSpotify(uri.String(), "")
 	if err != nil {
 		exitWithErr(err)
 	}
@@ -105,8 +105,8 @@ func newSpotifyWithRedirectURI() *sync.Spotify {
 	return s
 }
 
-func newSpotifyWithRefreshToken() *sync.Spotify {
-	s, err := sync.NewSpotifyWithRefreshToken(flagRefreshToken)
+func newSpotifyWithRefreshToken() *concur.Spotify {
+	s, err := concur.NewSpotifyWithRefreshToken(flagRefreshToken)
 	if err != nil {
 		exitWithErr(err)
 	}
@@ -115,7 +115,7 @@ func newSpotifyWithRefreshToken() *sync.Spotify {
 }
 
 func main() {
-	var s *sync.Spotify
+	var s *concur.Spotify
 	if flagRefreshToken == "" {
 		s = newSpotifyWithRedirectURI()
 	} else {
@@ -131,7 +131,7 @@ func main() {
 
 	var list []string
 	for _, v := range subs {
-		r := &sync.Reddit{Max: flagPages, Subreddit: v}
+		r := &concur.Reddit{Max: flagPages, Subreddit: v}
 		l, err := r.Fetch()
 		if err != nil {
 			exitWithErr(err)

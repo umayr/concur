@@ -1,4 +1,4 @@
-package sync
+package concur
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 )
 
 func logf(format string, v ...interface{}) {
-	if os.Getenv("DEBUG_SYNC") != "" {
+	if os.Getenv("DEBUG_CONCUR") != "" {
 		log.Printf(format, v...)
 	}
 }
