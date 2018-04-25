@@ -61,21 +61,25 @@ func exitWithErr(err error) {
 }
 
 func newSpotifyWithRedirectURI() *sync.Spotify {
-	cb, err := url.Parse(flagRedirectURI)
+	uri, err := url.Parse(flagRedirectURI)
 	if err != nil {
 		exitWithErr(err)
 	}
 
-	s, err := sync.NewSpotify(cb.String(), "")
+	if uri.Scheme == "" {
+		exitWithErr(fmt.Errorf("Redirect URI should be provided as https://some-url.com/callback"))
+	}
+
+	s, err := sync.NewSpotify(uri.String(), "")
 	if err != nil {
 		exitWithErr(err)
 	}
 
 	var route string
-	if strings.HasPrefix(cb.Path, "/") {
-		route = cb.Path
+	if strings.HasPrefix(uri.Path, "/") {
+		route = uri.Path
 	} else {
-		route = "/" + cb.Path
+		route = "/" + uri.Path
 	}
 
 	http.HandleFunc(route, s.Callback)
@@ -84,18 +88,17 @@ func newSpotifyWithRedirectURI() *sync.Spotify {
 	})
 
 	var port string
-	if cb.Port() == "" {
+	if uri.Port() == "" {
 		port = "80"
 	} else {
-		port = cb.Port()
+		port = uri.Port()
 	}
 	go http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 
 	fmt.Printf("Please log in to Spotify by visiting the following page in your browser: %s\n", s.AuthURL())
 	time.AfterFunc(time.Minute, func() {
 		if !s.Ready() {
-			fmt.Println("Unable to get authorised by Spotify")
-			os.Exit(1)
+			exitWithErr(fmt.Errorf("Unable to get authorised by Spotify"))
 		}
 	})
 	<-s.Done
