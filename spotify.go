@@ -54,14 +54,9 @@ func NewSpotify(redirectURI, state string) (*Spotify, error) {
 
 func NewSpotifyWithRefreshToken(refreshToken string) (*Spotify, error) {
 	logf("requesting new access token with provided refresh token")
-	if os.Getenv(ClientKey) == "" && os.Getenv(ClientSecret) == "" {
-		return nil, ErrNoEnv
-	}
-
-	s := &Spotify{
-		auth:  spotify.NewAuthenticator(""),
-		Done:  make(chan bool),
-		state: "",
+	s, err := NewSpotify("", "")
+	if err != nil {
+		return nil, err
 	}
 
 	t := oauth2.Token{
@@ -145,7 +140,7 @@ func (s *Spotify) CurrentUser() (string, error) {
 		return "", err
 	}
 
-	return string(user.ID), err
+	return string(user.ID), nil
 }
 
 func (s *Spotify) Search(query []string) ([]string, error) {
@@ -171,6 +166,11 @@ func (s *Spotify) Search(query []string) ([]string, error) {
 					"-",
 					-1),
 			)
+		if q == "" {
+			logf("query is empty after transformation, skipping search for %s", t)
+			continue
+		}
+
 		logf("searching for %s", q)
 
 		results, err := s.client.SearchOpt(q, spotify.SearchTypeTrack, &opts)
@@ -275,6 +275,9 @@ func (s *Spotify) AddToPlaylist(playlistID string, idx ...string) (int, error) {
 		}
 	}
 
+	// breaking the array of track IDs into array of length 100 as
+	// Spotify only allows to add 100 tracks in the playlist per
+	// API call.
 	for _, c := range breakIDs(list, 100) {
 		if _, err := s.client.AddTracksToPlaylist(userID, spotify.ID(playlistID), c...); err != nil {
 			return 0, err
