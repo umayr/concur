@@ -27,7 +27,7 @@ OR you can simply download prebuild binaries from [here](https://github.com/umay
 ### Usage
 To get it working, you'd require a Client ID and Secret for Spotify. You can create an app from [here](https://beta.developer.spotify.com)
 and provide a redirect URI which Spotify would be using to complete authentication process. Once you have Client ID and
-Secret, set them as environment variables and do the following:
+Secret, set them as environment variables (`SPOTIFY_ID` and `SPOTIFY_SECRET` respectively) and do the following:
 ```bash
 # make sure you have sync binary in your $PATH variable
 λ sync -subreddit=music -pages=3 -redirect-uri='http://localhost:8080/callback' -playlist-id=4WftiOQe0gRuis2AfKF3VS
