@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"regexp"
-	//"sort"
 	"strings"
 
 	"github.com/zmb3/spotify"
