@@ -1,4 +1,4 @@
-# `sync`
+# `concur`
 >create and synchronise tracks posted on various subreddits with spotify playlist
 
 ### Motivation
@@ -15,29 +15,29 @@ you can also set up a lambda function on AWS and invoke it via cloudwatch to aut
 You can install this via following methods:
 ```bash
 # via go get
-λ go get -u github.com/umayr/sync/cmd/sync
+λ go get -u github.com/umayr/concur/cmd/concur
 
 # via git
-λ git clone github.com/umayr/sync
+λ git clone github.com/umayr/concur
 λ make
 ```
 
-OR you can simply download prebuild binaries from [here](https://github.com/umayr/sync/releases).
+OR you can simply download prebuild binaries from [here](https://github.com/umayr/concur/releases).
 
 ### Usage
 To get it working, you'd require a Client ID and Secret for Spotify. You can create an app from [here](https://beta.developer.spotify.com)
 and provide a redirect URI which Spotify would be using to complete authentication process. Once you have Client ID and
 Secret, set them as environment variables (`SPOTIFY_ID` and `SPOTIFY_SECRET` respectively) and do the following:
 ```bash
-# make sure you have sync binary in your $PATH variable
-λ sync -subreddit=music -pages=3 -redirect-uri='http://localhost:8080/callback' -playlist-id=4WftiOQe0gRuis2AfKF3VS
+# make sure you have concur binary in your $PATH variable
+λ concur -subreddit=music -pages=3 -redirect-uri='http://localhost:8080/callback' -playlist-id=4WftiOQe0gRuis2AfKF3VS
 ```
 And that would be it.
 
-Furthermore, if you have logs enabled via setting `DEBUG_SYNC` environment variable, you can see verbose logs in your
+Furthermore, if you have logs enabled via setting `DEBUG_CONCUR` environment variable, you can see verbose logs in your
 terminal, you can extract refresh token from those logs and use that to skip the authentication part like this:
 ```bash
-λ sync -subreddit=music,listentothis -pages=10 -refresh-token='<token>'
+λ concur -subreddit=music,listentothis -pages=10 -refresh-token='<token>'
 ```
 If you don't provide a playlist ID, then it would create a playlist for you. For command above, new playlist would be
 named `Reddit Sync - /r/music /r/listentothis`.
