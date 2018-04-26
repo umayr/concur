@@ -152,9 +152,10 @@ func (s *Spotify) Search(query []string) ([]string, error) {
 		limit  = 1
 		offset = 0
 		opts   = spotify.Options{Limit: &limit, Offset: &offset}
+		lq     = len(query)
 	)
 	var idx []string
-	for _, t := range query {
+	for i, t := range query {
 		q :=
 			strings.TrimSpace(
 				strings.Replace(
@@ -171,7 +172,7 @@ func (s *Spotify) Search(query []string) ([]string, error) {
 			continue
 		}
 
-		logf("searching for %s", q)
+		logf("searching for (%d/%d) %s", i, lq, q)
 
 		results, err := s.client.SearchOpt(q, spotify.SearchTypeTrack, &opts)
 		if err != nil {
@@ -180,7 +181,7 @@ func (s *Spotify) Search(query []string) ([]string, error) {
 		}
 
 		if results.Tracks != nil && len(results.Tracks.Tracks) > 0 {
-			logf("found tracks for %s, picking first track", q)
+			logf("found %d tracks for %s, picking first track", results.Tracks.Total, q)
 			idx = append(idx, results.Tracks.Tracks[0].ID.String())
 		}
 	}
