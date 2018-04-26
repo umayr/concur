@@ -73,6 +73,11 @@ func (r *Reddit) Fetch() ([]string, error) {
 	lp, lr := len(payload.Data.Children), len(r.list)
 	logf("nodes appended to list (%d): %d", lr, lp)
 
+	if lp == 0 {
+		logf("couldn't get anymore posts, returning now")
+		return r.list, nil
+	}
+
 	r.cursor++
 	r.lastID = payload.Data.Children[lp-1].Data.ID
 
